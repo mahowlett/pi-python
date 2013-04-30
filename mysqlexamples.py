@@ -1,12 +1,15 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+from bottle import route, default_app
 import MySQLdb as mdb
 import sys
+import config
+
 
 con = None
 
-@route('/mysqlver')
+@route('/mysql/ver')
 def mysqlver():
         try:
 
@@ -25,7 +28,7 @@ def mysqlver():
                 con.close()
         return output;
 
-@route('/mysqlselect')
+@route('/mysql/select')
 def mysqlselecttable():
         try:
                 output = "Results: </br>"
@@ -42,7 +45,7 @@ def mysqlselecttable():
                         con.close()
         return output;
 
-@route('/mysqlcreate')
+@route('/mysql/create')
 def mysqlcreatetable():
         try:
                 con=mdb.connect('localhost', 'root', config.dbPassword, 'test')
@@ -63,4 +66,7 @@ def mysqlcreatetable():
                 if con:
                         con.close()
         return output;
+
+
+application = default_app()
 
