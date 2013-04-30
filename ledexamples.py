@@ -1,31 +1,26 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-#export QUICK2WIRE_API_HOME=/home/pi/git/quick2wire-python-api
-#export PYTHONPATH=$PYTHONPATH:$QUICK2WIRE_API_HOME
 import os
-
-
-#q2wpath = "/home/pi/git/quick2wire-python-api"
-#os.environ['QUICK2WIRE_API_HOME'] = q2wpath
-#ppath = os.environ['PYTHONPATH']  
-#os.environ['PYTHONPATH']= ppath +':'+q2wpath
-
 import sys
+
+sys.path.append("/home/pi/git/quick2wire-python-api")
+
 import datetime 
-import time
-#from quick2wirw.gpio import pins, out
+from time import sleep
+from quick2wire.gpio import pins, Out
+from itertools import cycle
 
-def ledonoff(req):
+def ledonoff():
 
-        #led = pins.pin(24, direction = Out)
-	#led_state = 1
-	#with led:
-	#	led.value=1
-#		sleep(0.5)
-	#	led.value=0
+	led = pins.pin(5, direction = Out)
+	led_state = 1
+	with led:
+		for v in cycle([1,0]):
+			led.value=v
+			sleep(0.5)
+	return "s'allright";
 
-        output = os.environ;
-        return output;
+ledonoff()
 
 
