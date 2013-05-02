@@ -17,5 +17,8 @@ def index():
 #mysql prefixed routes
 import mysqlexamples
 
+#led prefixed routes
+import ledController
+
 application = default_app()
 
