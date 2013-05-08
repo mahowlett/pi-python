@@ -13,7 +13,7 @@ con = None
 def mysqlver():
         try:
 
-            con=mdb.connect('localhost', 'root',(conf.config['localDb']['Password'], 'test');
+            con=mdb.connect('localhost', 'root',conf.config['localDb']['Password'], 'test');
 
             cur=con.cursor();
             cur.execute("SELECT VERSION()");

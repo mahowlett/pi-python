@@ -3,10 +3,12 @@
 
 import os
 import sys
+import config as conf
 
 def tempCurrent():
 
-        tfile = open("/sys/bus/w1/devices/28-000003c238ec/w1_slave")
+        sensorFilename = "/sys/bus/w1/devices/" + conf.config['TempSensor']['serial']  + "/w1_slave"
+        tfile = open(sensorFilename)
         text=tfile.read()
         tfile.close()
         secondline = text.split("\n") [1]

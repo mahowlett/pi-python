@@ -5,7 +5,7 @@ import os
 import sys
 import config as conf
 
-sys.path.append((conf.config['Quick2Wire']['libraryLocation'])
+sys.path.append(conf.config['Quick2Wire']['libraryLocation'])
 
 import datetime
 from time import sleep
