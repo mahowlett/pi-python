@@ -6,6 +6,7 @@ import socket
 import os
 import sys
 import ledLibrary as ledLib
+import tempLibrary as tempLib
 
 HOST = ''                 # Symbolic name meaning all available interfaces
 PORT = 50007              # Arbitrary non-privileged port
@@ -40,6 +41,11 @@ with ledLib.led:
         if stringData.upper() == "LEDSTATUS":
             answer = ledLib.ledstatus()
             response = 'Led is ' + answer
+
+        #temp (current)
+        if stringData.upper() == "TEMPCURRENT":
+            answer = tempLib.tempCurrent()
+            response = 'Temperature is ' + answer + ' degrees centigrade'
 
         #help
         if stringData.upper() == "HELP":

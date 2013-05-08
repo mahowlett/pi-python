@@ -20,5 +20,8 @@ import mysqlexamples
 #led prefixed routes
 import ledController
 
+#temp prefixed routes
+import tempController
+
 application = default_app()
 
