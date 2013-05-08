@@ -5,11 +5,12 @@
 import socket
 import os
 import sys
+import config as conf
 import ledLibrary as ledLib
 import tempLibrary as tempLib
 
 HOST = ''                 # Symbolic name meaning all available interfaces
-PORT = 50007              # Arbitrary non-privileged port
+PORT = int(conf.config['RPCServer']['Port'])
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 s.bind((HOST, PORT))
@@ -20,7 +21,7 @@ with ledLib.led:
         conn, addr = s.accept()
         print('Connected by', addr)
         data = conn.recv(1024)
-        stringData = data.decode('UTF-8')
+        stringData = data.decode(conf.config['encoding'])
         #
         # Handle commands
         #
@@ -59,7 +60,7 @@ with ledLib.led:
         if stringData.upper() == "EXIT":
             break 
 
-        conn.sendall(response.encode('UTF-8'))
+        conn.sendall(response.encode(conf.config['encoding']))
     conn.close()
 
 

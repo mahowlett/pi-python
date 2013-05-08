@@ -3,7 +3,9 @@
 
 import os
 import sys
-sys.path.append("/home/pi/git/quick2wire-python-api")
+import config as conf
+
+sys.path.append((conf.config['Quick2Wire']['libraryLocation'])
 
 import datetime
 from time import sleep
@@ -11,7 +13,7 @@ from quick2wire.gpio import pins, Out
 from itertools import cycle
 
 
-led = pins.pin(5, direction = Out)
+led = pins.pin(int(conf.config['Quick2Wire']['led1Pin']), direction = Out)
 led_state = 1
 
 def ledon():

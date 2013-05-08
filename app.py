@@ -1,5 +1,5 @@
 from bottle import default_app,route,template
-import config
+import config as conf
 
 
 @route('/hello')

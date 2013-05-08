@@ -3,9 +3,10 @@
 
 import socket
 import sys
+import config as conf
 
 HOST = socket.gethostbyname(socket.gethostname())
-PORT = 50007            # The same port as used by the server
+PORT = int(conf.config['RPCServer']['Port'])
 
 def sendCommand(command):
         try:

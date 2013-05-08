@@ -4,7 +4,7 @@
 from bottle import route, default_app
 import MySQLdb as mdb
 import sys
-import config
+import config as conf
 
 
 con = None
@@ -13,7 +13,7 @@ con = None
 def mysqlver():
         try:
 
-            con=mdb.connect('localhost', 'root',config.dbPassword, 'test');
+            con=mdb.connect('localhost', 'root',(conf.config['localDb']['Password'], 'test');
 
             cur=con.cursor();
             cur.execute("SELECT VERSION()");
@@ -32,7 +32,7 @@ def mysqlver():
 def mysqlselecttable():
         try:
                 output = "Results: </br>"
-                con=mdb.connect('localhost','root',config.dbPassword,'test')
+                con=mdb.connect('localhost','root',conf.config['localDb']['Password'],'test')
                 cur=con.cursor()
                 cur.execute("Select * from Writers")
                 rows=cur.fetchall()
@@ -48,7 +48,7 @@ def mysqlselecttable():
 @route('/mysql/create')
 def mysqlcreatetable():
         try:
-                con=mdb.connect('localhost', 'root', config.dbPassword, 'test')
+                con=mdb.connect('localhost', 'root',conf.config['localDb']['Password'], 'test')
                 cur=con.cursor()
                 cur.execute("CREATE TABLE IF NOT EXISTS \
                         Writers(Id INT PRIMARY KEY AUTO_INCREMENT, Name VARCHAR(35))")
