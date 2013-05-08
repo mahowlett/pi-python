@@ -20,4 +20,10 @@ def ledon():
 def ledoff():
         led.value=0
 
+def ledstatus():
+        statusString = 'Off'
+        if led.value == 1:
+            statusString = 'On'
+        return statusString
+
 

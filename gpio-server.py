@@ -5,33 +5,16 @@
 import socket
 import os
 import sys
-
-sys.path.append("/home/pi/git/quick2wire-python-api")
-
-import datetime
-from time import sleep
-from quick2wire.gpio import pins, Out
-from itertools import cycle
+import ledLibrary as ledLib
 
 HOST = ''                 # Symbolic name meaning all available interfaces
 PORT = 50007              # Arbitrary non-privileged port
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-led = pins.pin(5, direction = Out)
-led_state = 1
-
-def ledon():
-        print('In led on')    
-        led.value=1
-        #sleep(30)
-
-def ledoff():
-        led.value=0
-
 s.bind((HOST, PORT))
 s.listen(1)
 
-with led:
+with ledLib.led:
     while True:
         conn, addr = s.accept()
         print('Connected by', addr)
@@ -41,29 +24,36 @@ with led:
         # Handle commands
         #
     
+        #default behaviour echo sent message back
+        response = stringData
         #led on
         if stringData.upper() == "LEDON":
-            print('Led On')
-            ledon()
+            ledLib.ledon()
+            response = 'Led is now on'
 
         #led off
         if stringData.upper() == "LEDOFF":
-            print('Led off')
-            ledoff()
+            ledLib.ledoff()
+            response = 'Led is now off'
+
+        #led status
+        if stringData.upper() == "LEDSTATUS":
+            answer = ledLib.ledstatus()
+            response = 'Led is ' + answer
 
         #help
         if stringData.upper() == "HELP":
-            print('Commands are case insensitive')
-            print('ledon - Switch led on')
-            print('ledoff - Switch led off')
-            print('exit - close server')
-            print('help - This help')
+            response = response + 'Commands are case insensitive,'
+            response = response + 'ledon - Switch led on,'
+            response = response + 'ledoff - Switch led off,'
+            response = response + 'exit - close server,'
+            response = response + 'help - This help,'
 
         #exit
         if stringData.upper() == "EXIT":
             break 
 
-        conn.sendall(data)
+        conn.sendall(response.encode('UTF-8'))
     conn.close()
 
 

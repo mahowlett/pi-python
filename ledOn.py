@@ -16,9 +16,8 @@ def ledon():
 	led = pins.pin(5, direction = Out)
 	led_state = 1
 	with led:
-		for v in cycle([1,0]):
-			led.value=v
-			sleep(0.5)
+		led.value=1
+		sleep(30)
 	return "LED on";
 
 ledon()
