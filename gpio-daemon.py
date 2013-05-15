@@ -6,6 +6,7 @@ import sys, time
 import socket
 import os
 import config as conf
+import logging
 import ledLibrary as ledLib
 import tempLibrary as tempLib
 
@@ -14,57 +15,66 @@ from daemon import daemon
 HOST = ''                 # Symbolic name meaning all available interfaces
 PORT = int(conf.config['RPCServer']['Port'])
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
+logging.basicConfig(filename=conf.config['logFile'],level=logging.DEBUG)
+logging.debug('inside Daemon')
 s.bind((HOST, PORT))
+
 s.listen(1)
 
 class MyDaemon(daemon):
         def run(self):
-            with ledLib.led:
                 while True:
-                    conn, addr = s.accept()
-                    #print('Connected by', addr)
-                    data = conn.recv(1024)
-                    stringData = data.decode(conf.config['encoding'])
-                    #
-                    # Handle commands
-                    #
+                    logging.debug('GPIO daemon run called')
+                    try:
+                        conn, addr = s.accept()
+                        
+                        data = conn.recv(1024)
+                        stringData = data.decode(conf.config['encoding'])
+                        #
+                        # Handle commands
+                        #
 
-                    #default behaviour echo sent message back
-                    response = stringData
-                    #led on
-                    if stringData.upper() == "LEDON":
-                        ledLib.ledon()
-                        response = 'Led is now on'
+                        #default behaviour echo sent message back
+                        response = stringData
+                     
+                        with ledLib.led:
+                            #led on
+                            if stringData.upper() == "LEDON":
+                                ledLib.ledon()
+                                response = 'Led is now on'
 
-                    #led off
-                    if stringData.upper() == "LEDOFF":
-                        ledLib.ledoff()
-                        response = 'Led is now off'
+                            #led off
+                            if stringData.upper() == "LEDOFF":
+                                ledLib.ledoff()
+                                response = 'Led is now off'
 
-                    #led status
-                    if stringData.upper() == "LEDSTATUS":
-                        answer = ledLib.ledstatus()
-                        response = 'Led is ' + answer
+                            #led status
+                            if stringData.upper() == "LEDSTATUS":
+                                answer = ledLib.ledstatus()
+                                response = 'Led is ' + answer
 
-                    #temp (current)
-                    if stringData.upper() == "TEMPCURRENT":
-                        answer = tempLib.tempCurrent()
-                        response = 'Temperature is ' + answer + ' degrees centigrade'
-                    #help
-                    if stringData.upper() == "HELP":
-                        response = response + 'Commands are case insensitive,'
-                        response = response + 'ledon - Switch led on,'
-                        response = response + 'ledoff - Switch led off,'
-                        response = response + 'exit - close server,'
-                        response = response + 'help - This help,'
+                        #temp (current)
+                        if stringData.upper() == "TEMPCURRENT":
+                            answer = tempLib.tempCurrent()
+                            response = 'Temperature is ' + answer + ' degrees centigrade'
+            
+                        #help
+                        if stringData.upper() == "HELP":
+                            response = response + 'Commands are case insensitive,'
+                            response = response + 'ledon - Switch led on,'
+                            response = response + 'ledoff - Switch led off,'
+                            response = response + 'exit - close server,'
+                            response = response + 'help - This help,'
 
-                    #exit
-                    if stringData.upper() == "EXIT":
-                        break
+                        #exit
+                        #if stringData.upper() == "EXIT":
+                        #    break
 
-                    conn.sendall(response.encode(conf.config['encoding']))
-                conn.close()
+                        conn.sendall(response.encode(conf.config['encoding']))
+                    finally:
+                        conn.close()
         def stop(self):
             conn.close()
             super(MyDaemon,self).stop()
