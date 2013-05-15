@@ -19,14 +19,16 @@ s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
 logging.basicConfig(filename=conf.config['logFile'],level=logging.DEBUG)
 logging.debug('inside Daemon')
-s.bind((HOST, PORT))
-
-s.listen(1)
+#s.bind((HOST, PORT))
+#s.listen(1)
 
 class MyDaemon(daemon):
         def run(self):
+                s.bind((HOST, PORT))
+                s.listen(1)
+                logging.debug('GPIO daemon run called')
                 while True:
-                    logging.debug('GPIO daemon run called')
+                    logging.debug('GPIO daemon in while loop')
                     try:
                         conn, addr = s.accept()
                         
