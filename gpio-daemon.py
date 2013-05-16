@@ -76,9 +76,9 @@ class MyDaemon(daemon):
 
                         conn.sendall(response.encode(conf.config['encoding']))
                     finally:
-                        conn.close()
+                        s.close()
         def stop(self):
-            conn.close()
+            s.close()
             super(MyDaemon,self).stop()
 
 if __name__ == "__main__":
