@@ -30,9 +30,19 @@ class MyDaemon(daemon):
                 while True:
                     logging.debug('GPIO daemon in while loop')
                     try:
+                        #data = conn.recv(1024)
+                        logging.debug('pre bind')
+                        #s.bind((HOST, PORT))
+                        logging.debug('post bind , pre listen')
+                        #s.listen(1)
+                        logging.debug('post listen, pre conn')
                         conn, addr = s.accept()
-                        
+                        logging.debug('post conn')
+
+
+                        logging.debug('GPIO Daemon pre recv')
                         data = conn.recv(1024)
+                        logging.debug('GPIO Daemon post rcv')
                         stringData = data.decode(conf.config['encoding'])
                         #
                         # Handle commands
@@ -40,7 +50,7 @@ class MyDaemon(daemon):
 
                         #default behaviour echo sent message back
                         response = stringData
-                     
+
                         with ledLib.led:
                             #led on
                             if stringData.upper() == "LEDON":
@@ -61,7 +71,7 @@ class MyDaemon(daemon):
                         if stringData.upper() == "TEMPCURRENT":
                             answer = tempLib.tempCurrent()
                             response = 'Temperature is ' + answer + ' degrees centigrade'
-            
+
                         #help
                         if stringData.upper() == "HELP":
                             response = response + 'Commands are case insensitive,'
@@ -75,10 +85,14 @@ class MyDaemon(daemon):
                         #    break
 
                         conn.sendall(response.encode(conf.config['encoding']))
-                    finally:
-                        s.close()
+                    except socket.error as  e:
+                        logging.debug("socket error %d (%s)" % (e.errno, e.strerror))
+                    #finally:
+                        logging.debug('closing sockets')
+                        conn.close()
+                        #s.close()
         def stop(self):
-            s.close()
+            #s.close()
             super(MyDaemon,self).stop()
 
 if __name__ == "__main__":
