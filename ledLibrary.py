@@ -4,6 +4,7 @@
 import os
 import sys
 import config as conf
+import logging
 
 sys.path.append(conf.config['Quick2Wire']['libraryLocation'])
 
@@ -12,20 +13,22 @@ from time import sleep
 from quick2wire.gpio import pins, Out
 from itertools import cycle
 
-
+logging.basicConfig(filename=conf.config['logFile'],level=logging.DEBUG)
 led = pins.pin(int(conf.config['Quick2Wire']['led1Pin']), direction = Out)
 led_state = 1
 
 def ledon():
-        led.value=1
+    logging.debug('Switch led on')    
+    led.value=1
+    sleep(30)
 
 def ledoff():
-        led.value=0
+    led.value=0
 
 def ledstatus():
-        statusString = 'Off'
-        if led.value == 1:
-            statusString = 'On'
-        return statusString
+    statusString = 'Off'
+    if led.value == 1:
+        statusString = 'On'
+    return statusString
 
 
