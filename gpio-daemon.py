@@ -19,22 +19,18 @@ s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
 logging.basicConfig(filename=conf.config['logFile'],level=logging.DEBUG)
 logging.debug('inside Daemon')
-#s.bind((HOST, PORT))
-#s.listen(1)
 
 class MyDaemon(daemon):
         def run(self):
+            with ledLib.led:
                 s.bind((HOST, PORT))
                 s.listen(1)
                 logging.debug('GPIO daemon run called')
                 while True:
                     logging.debug('GPIO daemon in while loop')
                     try:
-                        #data = conn.recv(1024)
                         logging.debug('pre bind')
-                        #s.bind((HOST, PORT))
                         logging.debug('post bind , pre listen')
-                        #s.listen(1)
                         logging.debug('post listen, pre conn')
                         conn, addr = s.accept()
                         logging.debug('post conn')
@@ -51,21 +47,20 @@ class MyDaemon(daemon):
                         #default behaviour echo sent message back
                         response = stringData
 
-                        with ledLib.led:
-                            #led on
-                            if stringData.upper() == "LEDON":
-                                ledLib.ledon()
-                                response = 'Led is now on'
+                        #led on
+                        if stringData.upper() == "LEDON":
+                            ledLib.ledon()
+                            response = 'Led is now on'
 
-                            #led off
-                            if stringData.upper() == "LEDOFF":
-                                ledLib.ledoff()
-                                response = 'Led is now off'
+                        #led off
+                        if stringData.upper() == "LEDOFF":
+                            ledLib.ledoff()
+                            response = 'Led is now off'
 
-                            #led status
-                            if stringData.upper() == "LEDSTATUS":
-                                answer = ledLib.ledstatus()
-                                response = 'Led is ' + answer
+                        #led status
+                        if stringData.upper() == "LEDSTATUS":
+                            answer = ledLib.ledstatus()
+                            response = 'Led is ' + answer
 
                         #temp (current)
                         if stringData.upper() == "TEMPCURRENT":
@@ -90,9 +85,12 @@ class MyDaemon(daemon):
                     #finally:
                         logging.debug('closing sockets')
                         conn.close()
+                        #ledLib.ledclose()
                         #s.close()
         def stop(self):
             #s.close()
+            #s.close()
+            #ledLib.ledClose()
             super(MyDaemon,self).stop()
 
 if __name__ == "__main__":
