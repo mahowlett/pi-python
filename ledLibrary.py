@@ -15,15 +15,15 @@ led = pins.pin(int(conf.config['Quick2Wire']['led1Pin']), direction = Out)
 led_state = 1
 
 def ledon():
-    logging.debug('Switch led on')    
+    logging.debug('Led Library - Switch led on')    
     led.value=1
 
 def ledoff():
-    logging.debug('Switch led off')
+    logging.debug('Led Library - Switch led off')
     led.value=0
 
 def ledstatus():
-    logging.debug('Led status')
+    logging.debug('Led Library - Led status')
     statusString = 'Off'
     if led.value == 1:
         statusString = 'On'

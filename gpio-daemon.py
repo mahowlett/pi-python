@@ -18,7 +18,6 @@ s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
 logging.basicConfig(filename=conf.config['logFile'],level=logging.DEBUG)
-logging.debug('inside Daemon')
 
 class MyDaemon(daemon):
         def run(self):
@@ -27,23 +26,16 @@ class MyDaemon(daemon):
                 s.listen(1)
                 logging.debug('GPIO daemon run called')
                 while True:
-                    logging.debug('GPIO daemon in while loop')
                     try:
-                        logging.debug('pre bind')
-                        logging.debug('post bind , pre listen')
-                        logging.debug('post listen, pre conn')
                         conn, addr = s.accept()
-                        logging.debug('post conn')
 
-
-                        logging.debug('GPIO Daemon pre recv')
                         data = conn.recv(1024)
-                        logging.debug('GPIO Daemon post rcv')
                         stringData = data.decode(conf.config['encoding'])
                         #
                         # Handle commands
                         #
 
+                        logging.debug('GPIO Daemon command - %s' % (stringData.upper()))
                         #default behaviour echo sent message back
                         response = stringData
 
@@ -83,6 +75,9 @@ class MyDaemon(daemon):
                         conn.close()
         def stop(self):
             super(MyDaemon,self).stop()
+        def start(self):
+            logging.debug('Overridden start()')
+            super(MyDaemon,self).start()
 
 if __name__ == "__main__":
         daemon = MyDaemon('/tmp/daemon-example.pid')
