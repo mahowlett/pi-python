@@ -75,22 +75,13 @@ class MyDaemon(daemon):
                             response = response + 'exit - close server,'
                             response = response + 'help - This help,'
 
-                        #exit
-                        #if stringData.upper() == "EXIT":
-                        #    break
-
                         conn.sendall(response.encode(conf.config['encoding']))
                     except socket.error as  e:
                         logging.debug("socket error %d (%s)" % (e.errno, e.strerror))
                     #finally:
                         logging.debug('closing sockets')
                         conn.close()
-                        #ledLib.ledclose()
-                        #s.close()
         def stop(self):
-            #s.close()
-            #s.close()
-            #ledLib.ledClose()
             super(MyDaemon,self).stop()
 
 if __name__ == "__main__":
@@ -110,6 +101,6 @@ if __name__ == "__main__":
                         sys.exit(2)
                 sys.exit(0)
         else:
-                print("usage: %s start|stop|restart" % sys.argv[0])
+                print("usage: %s start|stop|restart|run" % sys.argv[0])
                 sys.exit(2)
 
