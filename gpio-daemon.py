@@ -59,6 +59,13 @@ class MyDaemon(daemon):
                             answer = tempLib.tempCurrent()
                             response = 'Temperature is ' + answer + ' degrees centigrade'
 
+                        #log temperature
+                        if stringData.upper() == "TEMPLOG":
+                            if tempLib.tempLog():
+                                response = 'Temperature Logged'
+                            else:
+                                response = 'Could not log the temperature'
+
                         #help
                         if stringData.upper() == "HELP":
                             response = response + 'Commands are case insensitive,'

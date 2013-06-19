@@ -20,4 +20,5 @@ def tempCurrent():
 
         return output
 
-
+def tempLog():
+	return True

@@ -8,5 +8,9 @@ import gpio_client as client
 def currTemp():
         return client.sendCommand('tempcurrent')
 
+@route('/temp/log')
+def logTemp():
+	return client.sendCommand('templog')
+
 application = default_app()
 
