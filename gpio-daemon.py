@@ -9,6 +9,7 @@ import config as conf
 import logging
 import ledLibrary as ledLib
 import tempLibrary as tempLib
+from subprocess import call
 
 from daemon import daemon
 
@@ -84,6 +85,7 @@ class MyDaemon(daemon):
             super(MyDaemon,self).stop()
         def start(self):
             logging.debug('Overridden start()')
+            call(["gpio-admin","unexport","24"])
             super(MyDaemon,self).start()
 
 if __name__ == "__main__":
