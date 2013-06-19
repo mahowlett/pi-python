@@ -1,0 +1,11 @@
+encoding:         'UTF-8'
+logFile:          '/var/log/gpio.log'
+localDb:
+    Password:     '<dbPasswordHere>'
+RPCServer:
+    Port:         '50007'
+Quick2Wire:
+    libraryLocation: '/home/pi/git/quick2wire-python-api'
+    led1Pin:       '5'
+TempSensor:
+    serial:        '99-999999993999'
