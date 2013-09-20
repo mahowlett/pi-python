@@ -48,6 +48,10 @@ with ledLib.led:
             answer = tempLib.tempCurrent()
             response = 'Temperature is ' + answer + ' degrees centigrade'
 
+        if stringData.upper() == "TEMPLOG":
+            answer = tempLib.tempLog()
+            response = 'Temperature has been logged'
+
         #help
         if stringData.upper() == "HELP":
             response = response + 'Commands are case insensitive,'
