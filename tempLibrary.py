@@ -9,6 +9,10 @@ import datetime
 import time
 import logging
 
+sys.path.append(conf.config['Quick2Wire']['libraryLocation'])
+from quick2wire.gpio import pins, Out
+from time import sleep
+
 con = None
 
 logging.basicConfig(filename=conf.config['logFile'],level=logging.DEBUG)
@@ -59,3 +63,21 @@ def tempLog():
                 if con:
                         con.close()
         return output
+
+def tempOn():
+        pin = pins.pin(int(conf.config['Quick2Wire']['relay1OnPin']), direction = Out)
+        logging.debug('Temp Library - Switch heating on')
+        with pin:
+            pin.value=1
+            sleep(0.05)
+            pin.value=0
+        return "On"
+
+def tempOff():
+        pin = pins.pin(int(conf.config['Quick2Wire']['relay1OffPin']), direction = Out)
+        logging.debug('Temp Library - Switch heating off')
+        with pin:        
+            pin.value=1
+            sleep(0.05)
+            pin.value=0
+        return "Off"

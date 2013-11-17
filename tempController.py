@@ -17,5 +17,15 @@ def logTemp():
 	logging.debug('temp controller templog')
         return client.sendCommand('templog')
 
+@route('/temp/on')
+def onTemp():
+        logging.debug('Temp controller on')
+        return client.sendCommand('tempon')
+
+@route('/temp/off')
+def offTemp():
+        logging.debug('Temp controller off')
+        return client.sendCommand('tempoff')
+
 application = default_app()
 

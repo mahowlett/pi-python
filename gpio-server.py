@@ -52,6 +52,16 @@ with ledLib.led:
             answer = tempLib.tempLog()
             response = 'Temperature has been logged'
 
+        #temp (heating on)
+        if stringData.upper() == "TEMPON":
+            answer = tempLib.tempOn()
+            response = 'Heating now on'
+
+        #temp (heating off)
+        if stringData.upper() == "TEMPOFF":
+            answer = tempLib.tempOff()
+            response = 'Heating now off'
+
         #help
         if stringData.upper() == "HELP":
             response = response + 'Commands are case insensitive,'
